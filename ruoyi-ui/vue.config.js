@@ -82,6 +82,11 @@ module.exports = {
             // `runtime` must same as runtimeChunk name. default is `runtime`
               inline: /runtime\..*\.js$/
             }])
+            .use('compression-webpack-plugin', [{
+              test:/\.js$|\.html$|.\css/, //匹配文件名
+              threshold: 512,//对超过512b的数据压缩
+              deleteOriginalAssets: false //不删除源文件
+            }])
             .end()
           config
             .optimization.splitChunks({

@@ -1,9 +1,9 @@
 import { login, logout, getInfo } from '@/api/login'
+import { register } from '@/api/register'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 
 const user = {
   state: {
-    token: getToken(),
     name: '',
     avatar: '',
     roles: [],
@@ -45,7 +45,20 @@ const user = {
         })
       })
     },
-
+    // 注册
+    Register({ commit }, userInfo) {
+      const username = userInfo.username.trim()
+      const password = userInfo.password
+      const code = userInfo.code
+      const uuid = userInfo.uuid
+      return new Promise((resolve, reject) => {
+        register(username, password, code, uuid).then(res => {
+          resolve()
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
     // 获取用户信息
     GetInfo({ commit, state }) {
       return new Promise((resolve, reject) => {
