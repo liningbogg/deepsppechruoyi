@@ -67,11 +67,8 @@ public class SysLoginService
         try
         {
             // 该方法会去调用UserDetailsServiceImpl.loadUserByUsername
-        	INFO_LOG.info(username);
-        	INFO_LOG.info(password);
             authentication = authenticationManager
                     .authenticate(new UsernamePasswordAuthenticationToken(username, password));
-            INFO_LOG.info(authentication.toString());
         }
         catch (Exception e)
         {

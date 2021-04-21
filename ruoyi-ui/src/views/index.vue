@@ -4,61 +4,15 @@
       <el-col :sm="24" :lg="12" style="padding-left: 20px">
         <h2>离线语音识别系统</h2>
         <p>
-          基于若依和deepspeech，提供简单的英文语音识别服务，gpu算力有限，提交后可能需要等待，此系统仅作为测试用， 算力达不到商业水平。有开源代码方便大家交流学习。在此感谢若依的贡献。
-        </p>
-        <p>
           <b>当前版本:</b> <span>v{{ version }}</span>
         </p>
-        <p>
-          <el-tag type="danger">&yen;免费开源</el-tag>
-        </p>
-        <p>
-          <el-button
-            size="mini"
-            icon="el-icon-s-home"
-            plain
-            @click="goTarget('https://github.com/liningbogg/deepsppechruoyi')"
-            >访问github主页</el-button
-          >
-        </p>
-      </el-col>
-
-      <el-col :sm="24" :lg="12" style="padding-left: 50px">
-        <el-row>
-          <el-col :span="12">
-            <h2>技术选型</h2>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="6">
-            <h4>后端技术</h4>
-            <ul>
-              <li>SpringBoot</li>
-              <li>Spring Security</li>
-              <li>JWT</li>
-              <li>MyBatis</li>
-              <li>Druid</li>
-              <li>Fastjson</li>
-              <li>Deepspeech</li>
-              <li>...</li>
-            </ul>
-          </el-col>
-          <el-col :span="6">
-            <h4>前端技术</h4>
-            <ul>
-              <li>Vue</li>
-              <li>Vuex</li>
-              <li>Element-ui</li>
-              <li>Axios</li>
-              <li>Sass</li>
-              <li>Quill</li>
-              <li>...</li>
-            </ul>
-          </el-col>
-        </el-row>
+        <el-upload ref="field101" :file-list="field101fileList" :action="field101Action"
+          :headers="field101headers"
+          :before-upload="field101BeforeUpload">
+          <el-button size="small" type="primary" icon="el-icon-upload">点击上传</el-button>
+        </el-upload>
       </el-col>
     </el-row>
-    <el-divider />
   </div>
 </template>
 
@@ -69,6 +23,8 @@ export default {
     return {
       // 版本号
       version: "0.0.1",
+      field101Action: '/prod-api/asr/handleUploadling',
+      field101fileList: [],
     };
   },
   methods: {
@@ -76,6 +32,14 @@ export default {
       window.open(href, "_blank");
     },
   },
+  computed: {
+    field101headers: function () {
+      return {
+      	'Authorization': "Bearer "+this.$store.getters.token, 
+      	'Accept': 'application/json',
+      }  
+    }
+  }
 };
 </script>
 

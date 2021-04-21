@@ -35,7 +35,7 @@
     <!-- 依赖声明 -->
     <dependencyManagement>
         <dependencies>
-        
+        	
             <!-- SpringBoot的依赖配置-->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
@@ -44,6 +44,7 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            
             
             <!--阿里数据库连接池 -->
             <dependency>
@@ -163,7 +164,7 @@
                 <artifactId>jjwt</artifactId>
                 <version>${jwt.version}</version>
             </dependency>
-			
+            
             <!--验证码 -->
             <dependency>
                 <groupId>com.github.penggle</groupId>

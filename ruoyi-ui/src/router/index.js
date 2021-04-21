@@ -62,13 +62,34 @@ export const constantRoutes = [
     path: '',
     component: Layout,
     redirect: 'index',
+    hidden: true,
     children: [
       {
         path: 'index',
         component: (resolve) => require(['@/views/index'], resolve),
-        name: '首页',
-        meta: { title: '首页', icon: 'dashboard', noCache: true, affix: true }
-      }
+        name: '网站首页',
+        meta: { title: '网站首页', icon: 'dashboard', noCache: true, affix: true }
+      },
+    ]
+  },
+  {
+    path: '/display',
+    component: Layout,
+    redirect: 'noredirect',
+    hidden: true,
+    children: [
+      {
+        path: 'taskset',
+        component: (resolve) => require(['@/views/listTaskset'], resolve),
+        name: '任务集列表',
+        meta: { title: '任务列表', icon: 'monitor', noCache: true, affix: true }
+      },
+      {
+        path: 'task',
+        component: (resolve) => require(['@/views/listTask'], resolve),
+        name: '语音列表',
+        meta: { title: '语音列表', icon: 'monitor', noCache: true, affix: true }
+      },
     ]
   },
   {

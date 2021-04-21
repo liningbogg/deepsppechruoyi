@@ -1,5 +1,7 @@
 package com.ruoyi.web.controller.system;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,7 @@ import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.domain.entity.SysRole;
 import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.core.domain.model.LoginUser;
+import com.ruoyi.common.core.domain.model.RegisterBody;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.SecurityUtils;
@@ -115,6 +118,30 @@ public class SysUserController extends BaseController
         return ajax;
     }
 
+    @Log(title = "用户注册", businessType = BusinessType.INSERT)
+    @PostMapping("/register")
+    public AjaxResult register(@RequestBody RegisterBody registerBody)
+    {
+        // 生成令牌
+        //String token = loginService.login(loginBody.getUsername(), loginBody.getPassword(), loginBody.getCode(),
+        //        loginBody.getUuid());
+        if (UserConstants.NOT_UNIQUE.equals(userService.checkUserNameUnique(registerBody.getUsername())))
+        {
+            return AjaxResult.error("新增用户'" + registerBody.getUsername() + "'失败，登录账号已存在");
+        }
+        SysUser user = new SysUser(); 
+        user.setUserName(registerBody.getUsername());
+        user.setCreateTime(new Date());
+        // List<SysRole> rolesList = new ArrayList<SysRole>();
+        // rolesList.add(new SysRole(2L));
+        Long roles[] = new Long[] {2L};  // 普通用户权限
+        // user.setRoles(rolesList);
+        user.setRoleIds(roles);
+        user.setNickName(registerBody.getUsername());
+        user.setPassword(SecurityUtils.encryptPassword(registerBody.getPassword()));
+        return toAjax(userService.insertUser(user));
+    }
+    
     /**
      * 新增用户
      */

@@ -24,7 +24,24 @@ public class RedisCache
 {
     @Autowired
     public RedisTemplate redisTemplate;
-
+    
+    /**
+     * 将list放入缓存
+     * @param key 键
+     * @param value 值
+     * @return
+     */
+    public boolean lSet(String key, Object value) {
+        try {
+            redisTemplate.opsForList().rightPush(key, value);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    
     /**
      * 缓存基本的对象，Integer、String、实体类等
      *
