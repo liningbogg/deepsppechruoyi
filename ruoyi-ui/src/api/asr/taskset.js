@@ -9,3 +9,12 @@ export function listTaskset(query) {
     params: query
   })
 }
+
+// 下载转写结果
+export function tasksetResultDownload(query) {
+  return request({
+    url: '/asr/taskset/download',
+    method: 'get',
+    params: query
+  })
+}

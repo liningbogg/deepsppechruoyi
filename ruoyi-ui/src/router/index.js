@@ -65,10 +65,10 @@ export const constantRoutes = [
     hidden: true,
     children: [
       {
-        path: 'index',
+        path: '/index',
         component: (resolve) => require(['@/views/index'], resolve),
         name: '网站首页',
-        meta: { title: '网站首页', icon: 'dashboard', noCache: true, affix: true }
+        meta: { title: '网站首页', icon: 'home', noCache: true, affix: true }
       },
     ]
   },
@@ -148,7 +148,7 @@ export const constantRoutes = [
 ]
 
 export default new Router({
-  mode: 'history', // 去掉url中的#
+  mode: 'hash', // 去掉url中的#
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRoutes
 })

@@ -35,6 +35,31 @@
             <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
           </el-form-item>
         </el-form>
+        <el-row :gutter="10" class="mb8">
+          <el-col :span="1.5">
+            <el-button
+              type="danger"
+              plain
+              icon="el-icon-delete"
+              size="mini"
+              :disabled="multiple"
+              @click="handleDelete"
+              v-hasPermi="['asr:task:remove']"
+            >删除</el-button>
+          </el-col>
+          <el-col :span="1.5">
+            <el-button
+              type="warning"
+              plain
+              icon="el-icon-download"
+              size="mini"
+              @click="handleExport"
+              v-hasPermi="['asr:task:export']"
+            >导出</el-button>
+          </el-col>
+          <right-toolbar :showSearch.sync="showSearch" @queryTable="getList" :columns="columns"></right-toolbar>
+        </el-row>
+        
         <el-table v-loading="loading" :data="taskList" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="50" align="center" min-width="5%"/>
           <el-table-column label="语音编号" align="center" key="taskId" prop="taskId" min-width="10%" v-if="columns[0].visible" :show-overflow-tooltip="true" />
@@ -65,9 +90,10 @@
             class-name="small-padding fixed-width"
           >
             <template slot-scope="scope">
-              <el-button type="primary" @click="onPlay(scope.row, scope.$index)" 
-              		icon="el-icon-video-play" v-if="scope.row.playstatusReady">播放</el-button>
-              <el-button type="primary" @click="onStopplay" icon="el-icon-video-pause" v-else>停止</el-button>
+              <el-button type="text" @click="onPlay(scope.row, scope.$index)" 
+              		icon="el-icon-video-play" 
+              		v-if="scope.row.playstatusReady">播放</el-button>
+              <el-button type="text" @click="onStopplay" icon="el-icon-video-pause" v-else>停止</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -86,7 +112,7 @@
 
 <script>
 import { listTask } from "@/api/asr/task";
-import { achieveWav } from "@/api/asr/task";
+import { achieveWav , delTask, exportTask} from "@/api/asr/task";
 export default {
   name: "ListTaskset",
   data() {
@@ -97,6 +123,12 @@ export default {
       showSearch: true,
       // 当前状态名称
       statusName: "",
+      // 非多个禁用
+      multiple: true,
+      // 非单个禁用
+      single: true,
+      // 选中的task
+	  taskids : [], 
       // 列信息
       columns: [
         { key: 0, label: `语音编号`, visible: true },
@@ -223,8 +255,39 @@ export default {
             console.log(this.taskList);
         });
     },
-    
-    
+    // 多选框选中数据
+    handleSelectionChange(selection) {
+      this.taskids = selection.map(item => item.taskId);
+      this.single = selection.length != 1;
+      this.multiple = !selection.length;
+    },
+    /** 删除按钮操作 */
+    handleDelete(row) {
+      const taskIds = row.taskId || this.taskids;
+      this.$confirm('是否确认删除编号为"' + taskIds + '"的数据项?', "警告", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        }).then(function() {
+          return delTask(taskIds);
+        }).then(() => {
+          this.getTaskList();
+          this.msgSuccess("删除成功");
+        })
+    },
+    /** 导出按钮操作 */
+    handleExport() {
+      const queryParams = this.queryParams;
+      this.$confirm('是否确认导出所有用户数据项?', "警告", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        }).then(function() {
+          return exportTask(queryParams);
+        }).then(response => {
+          this.download(response.msg);
+        })
+    },
   },
   
 };

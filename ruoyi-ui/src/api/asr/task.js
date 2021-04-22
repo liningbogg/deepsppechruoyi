@@ -18,3 +18,20 @@ export function achieveWav(query) {
     params: query
   })
 }
+
+// 删除task
+export function delTask(taskId) {
+  return request({
+    url: '/asr/task/' + taskId,
+    method: 'delete'
+  })
+}
+
+// 导出用户
+export function exportTask(query) {
+  return request({
+    url: '/asr/task/export',
+    method: 'get',
+    params: query
+  })
+}

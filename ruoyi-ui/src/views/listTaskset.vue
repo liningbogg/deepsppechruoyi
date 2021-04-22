@@ -47,26 +47,19 @@
             <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
           </el-form-item>
         </el-form>
+        
         <el-table v-loading="loading" :data="tasksetList" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="50" align="center" />
           <el-table-column label="任务集编号" align="center" key="tasksetId" prop="tasksetId" v-if="columns[0].visible" :show-overflow-tooltip="true" />
           <el-table-column label="任务集名称" align="center" key="tasksetName" prop="tasksetName" v-if="columns[1].visible" :show-overflow-tooltip="true" />
           <el-table-column label="用户名" align="center" key="createBy" prop="createBy" v-if="columns[2].visible" :show-overflow-tooltip="true" />
           <el-table-column label="创建时间" align="center" key="createTime" prop="createTime" v-if="columns[3].visible" />
-          <el-table-column label="完成状态" align="center" key="status" v-if="columns[4].visible">
-            <template slot-scope="scope">
-              <el-switch
-                v-model="scope.row.status"
-                active-value="2"
-                inactive-value="0"
-                @change="handleStatusChange(scope.row)"
-              ></el-switch>
-            </template>
-          </el-table-column>
           <el-table-column
             label="操作"
             align="center"
             width="160"
+            v-if="columns[4].visible" 
+            :show-overflow-tooltip="true"
             class-name="small-padding fixed-width"
           >
             <template slot-scope="scope">
@@ -106,13 +99,14 @@ export default {
       showSearch: true,
       // 当前状态名称
       statusName: "",
+      
       // 列信息
       columns: [
         { key: 0, label: `任务集编号`, visible: true },
         { key: 1, label: `任务集名称`, visible: true },
         { key: 2, label: `用户名`, visible: true },
         { key: 3, label: `创建时间`, visible: true },
-        { key: 4, label: `状态`, visible: true },
+        { key: 3, label: `操作`, visible: true },
       ],
       statusOptions: [
 		{
@@ -183,7 +177,7 @@ export default {
             }
         });
     },
-    
+        
   },
 };
 </script>

@@ -18,10 +18,13 @@ import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.domain.model.LoginUser;
 import com.ruoyi.common.enums.BusinessType;
+import com.ruoyi.web.domain.asr.AsrTask;
 import com.ruoyi.web.domain.asr.AsrTaskset;
 import com.ruoyi.web.service.asr.IAsrTasksetService;
 import com.ruoyi.common.utils.ServletUtils;
+import com.ruoyi.common.utils.file.AudioUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
+import com.ruoyi.common.utils.sign.Base64;
 import com.ruoyi.framework.web.service.TokenService;
 import com.ruoyi.common.core.page.TableDataInfo;
 
@@ -69,6 +72,7 @@ public class AsrTasksetController extends BaseController
         ExcelUtil<AsrTaskset> util = new ExcelUtil<AsrTaskset>(AsrTaskset.class);
         return util.exportExcel(list, "taskset");
     }
+    
 
     /**
      * 获取单次任务集合详细信息
