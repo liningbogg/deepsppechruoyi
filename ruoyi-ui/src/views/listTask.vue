@@ -93,7 +93,7 @@
               <el-button type="text" @click="onPlay(scope.row, scope.$index)" 
               		icon="el-icon-video-play" 
               		v-if="scope.row.playstatusReady">播放</el-button>
-              <el-button type="text" @click="onStopplay" icon="el-icon-video-pause" v-else>停止</el-button>
+              <el-button type="text" @click="onStopplay(scope.row, scope.$index)" icon="el-icon-video-pause" v-else>停止</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -254,6 +254,13 @@ export default {
             this.$set(this.taskList, index, rowdata);
             console.log(this.taskList);
         });
+    },
+    onStopplay(rowdata, index){
+        if(this.phrase!=null){
+            this.phrase.pause();
+            rowdata.playstatusReady=true;
+            this.$set(this.taskList, index, rowdata);
+        }
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
